@@ -1,0 +1,28 @@
+{
+  "name": "Udon Magazine",
+  "id": "net.ts7m.udon-magazine",
+  "url": "https://raw.githubusercontent.com/Tsukina-7mochi/udon-magazine/main/vpm.json",
+  "author": "Tsukina-7mochi",
+  "packages": {
+    "net.ts7m.udon-magazine": {
+      "versions": {
+        "0.1.0": {
+          "name" : "net.ts7m.udon-magazine",
+          "displayName" : "Udon Magazine",
+          "version" : "0.1.0",
+          "author": {
+            "name": "Mooncake Sugar",
+            "email": "Tsukina7mochi@gmail.com"
+          },
+          "unity" : "2022.3",
+          "description" : "Magazine Implementation for VRChat Udon",
+          "license": "MIT",
+          "vpmDependencies" : {
+            "com.vrchat.worlds": "3.5.0"
+          },
+          "url" : "https://github.com/Tsukina-7mochi/udon-magazine/releases/download/0.1.0/net.ts7m.glitch-shader-0.1.0.zip"
+        }
+      }
+    }
+  }
+}

@@ -1,7 +1,7 @@
 {
 	"name" : "net.ts7m.udon-magazine",
 	"displayName" : "Udon Magazine",
-	"version" : "0.1.0",
+	"version" : "0.1.1",
   "author": {
     "name": "Mooncake Sugar",
     "email": "Tsukina7mochi@gmail.com"
@@ -12,5 +12,5 @@
 	"vpmDependencies" : {
     "com.vrchat.worlds": "3.5.0"
 	},
-  "url" : "https://github.com/Tsukina-7mochi/udon-magazine/releases/download/0.1.0/net.ts7m.glitch-shader-0.1.0.zip"
+  "url" : "https://github.com/Tsukina-7mochi/udon-magazine/releases/download/0.1.1/net.ts7m.udon-magazine-0.1.1.zip"
 }

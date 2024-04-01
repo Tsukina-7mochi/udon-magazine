@@ -17,6 +17,7 @@ namespace net.ts7m.udon_magazine.script.udon
         private readonly int _animatorParamBackward = Animator.StringToHash("Backward");
         private readonly int _animatorParamOpenCloseBackwards = Animator.StringToHash("OpenCloseBackwards");
 
+        [SerializeField] [HideInInspector] private int version = 1;
         [SerializeField] private Texture2D[] pageTextures;
         [SerializeField] private bool doublePageCount;
         [SerializeField] private RawImage page1;

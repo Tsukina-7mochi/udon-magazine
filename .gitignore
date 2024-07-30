@@ -1,10 +1,5 @@
-/Assets
-/Packages/*
-/ProjectSettings
-
-# external editor directory
-/.idea
-/.vscode
+# Rider
+.idea
 
 # This .gitignore file should be placed at the root of your Unity project directory
 #

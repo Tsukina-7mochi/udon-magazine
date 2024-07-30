@@ -8,19 +8,19 @@ namespace net.ts7m.udon_magazine.script.udon {
         [SerializeField] private bool backward;
 
         public void Start() {
-            if (magazine == null) {
+            if (this.magazine == null) {
                 Debug.LogError("[UdonMagazineHandle] Magazine is not set.");
             }
         }
 
         public override void Interact() {
-            if (magazine == null) return;
+            if (this.magazine == null) return;
 
-            if (backward) {
-                magazine.Backward();
+            if (this.backward) {
+                this.magazine.Backward();
             }
             else {
-                magazine.Forward();
+                this.magazine.Forward();
             }
         }
     }

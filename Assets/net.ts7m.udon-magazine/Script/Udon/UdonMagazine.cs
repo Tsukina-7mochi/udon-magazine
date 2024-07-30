@@ -7,7 +7,7 @@ using VRC.Udon.Common.Interfaces;
 namespace net.ts7m.udon_magazine.script.udon {
     [UdonBehaviourSyncMode(BehaviourSyncMode.Manual), RequireComponent(typeof(Animator))]
     public class UdonMagazine : UdonSharpBehaviour {
-        private const int DELAY_FRAMES = 2;
+        private const int DelayFrames = 2;
         private readonly int _animatorParamOpened = Animator.StringToHash("isOpen");
         private readonly int _animatorParamForward = Animator.StringToHash("Forward");
         private readonly int _animatorParamBackward = Animator.StringToHash("Backward");
@@ -23,207 +23,215 @@ namespace net.ts7m.udon_magazine.script.udon {
         [SerializeField] private Text currentPageText;
         [SerializeField] private Text maxPageText;
 
-        private Animator _animator = null;
-        private bool _animating = false;
-        private int _maxPageIndex = 0;
+        private Animator _animator;
+        private bool _animating;
+        private int _maxPageIndex;
 
         [UdonSynced] private bool _closedSynced = true;
-        [UdonSynced] private int _pageIndexSynced = 0;
+        [UdonSynced] private int _pageIndexSynced;
 
         private bool _closed = true;
-        private int _pageIndex = 0;
-        private bool _refreshedOnce = false;
+        private int _pageIndex;
+        private bool _refreshedOnce;
 
         private bool _isOwner() => Networking.IsOwner(Networking.LocalPlayer, this.gameObject);
 
         private void _takeOwnership() {
-            if (_isOwner()) return;
+            if (this._isOwner()) return;
             Networking.SetOwner(Networking.LocalPlayer, this.gameObject);
         }
 
         private void _distribute(bool takeOwnership) {
-            if (takeOwnership) _takeOwnership();
-            if (!_isOwner()) return;
+            if (takeOwnership) this._takeOwnership();
+            if (!this._isOwner()) return;
 
-            _closedSynced = _closed;
-            _pageIndexSynced = _pageIndex;
-            RequestSerialization();
+            this._closedSynced = this._closed;
+            this._pageIndexSynced = this._pageIndex;
+            this.RequestSerialization();
         }
 
         private void _syncPageDisplay() {
-            page1.texture = pageTextures[_pageIndex * 2];
-            page4.texture = pageTextures[_pageIndex * 2 + 1];
+            this.page1.texture = this.pageTextures[this._pageIndex * 2];
+            this.page4.texture = this.pageTextures[this._pageIndex * 2 + 1];
 
-            var pageIndex = doublePageCount ? _pageIndex * 2 + 1 : _pageIndex + 1;
-            currentPageText.text = _closed ? "-" : pageIndex.ToString();
+            var pageIndex = this.doublePageCount ? this._pageIndex * 2 + 1 : this._pageIndex + 1;
+            this.currentPageText.text = this._closed ? "-" : pageIndex.ToString();
         }
 
         private void _open(int pageIndex, bool backwards) {
-            if (!_closed) return;
-            if (_animating) return;
-            _animating = true;
+            if (!this._closed) return;
+            if (this._animating) return;
+            this._animating = true;
 
-            _closed = false;
-            _pageIndex = pageIndex;
-            _syncPageDisplay();
-            _animator.SetBool(_animatorParamOpenCloseBackwards, backwards);
-            _animator.SetBool(_animatorParamOpened, true);
+            this._closed = false;
+            this._pageIndex = pageIndex;
+            this._syncPageDisplay();
+            this._animator.SetBool(this._animatorParamOpenCloseBackwards, backwards);
+            this._animator.SetBool(this._animatorParamOpened, true);
 
-            _distribute(false);
+            this._distribute(false);
         }
 
         private void _close(bool backwards) {
-            if (_closed) return;
-            if (_animating) return;
-            _animating = true;
+            if (this._closed) return;
+            if (this._animating) return;
+            this._animating = true;
 
-            _closed = true;
-            _syncPageDisplay();
-            _animator.SetBool(_animatorParamOpenCloseBackwards, backwards);
-            _animator.SetBool(_animatorParamOpened, false);
+            this._closed = true;
+            this._syncPageDisplay();
+            this._animator.SetBool(this._animatorParamOpenCloseBackwards, backwards);
+            this._animator.SetBool(this._animatorParamOpened, false);
 
-            _distribute(false);
+            this._distribute(false);
         }
 
         private void _sendPage(int pageIndex) {
-            if (_closed) return;
-            if (_animating) return;
-            _animating = true;
+            if (this._closed) return;
+            if (this._animating) return;
+            this._animating = true;
 
-            var fromPage = _pageIndex;
+            var fromPage = this._pageIndex;
             var toPage = pageIndex;
-            _pageIndex = toPage;
+            this._pageIndex = toPage;
 
             var forward = toPage > fromPage;
             if (forward) {
-                page1.texture = pageTextures[fromPage * 2];
-                page2.texture = pageTextures[fromPage * 2 + 1];
-                page3.texture = pageTextures[toPage * 2];
-                page4.texture = pageTextures[toPage * 2 + 1];
+                this.page1.texture = this.pageTextures[fromPage * 2];
+                this.page2.texture = this.pageTextures[fromPage * 2 + 1];
+                this.page3.texture = this.pageTextures[toPage * 2];
+                this.page4.texture = this.pageTextures[toPage * 2 + 1];
             }
             else {
-                page1.texture = pageTextures[toPage * 2];
-                page2.texture = pageTextures[toPage * 2 + 1];
-                page3.texture = pageTextures[fromPage * 2];
-                page4.texture = pageTextures[fromPage * 2 + 1];
+                this.page1.texture = this.pageTextures[toPage * 2];
+                this.page2.texture = this.pageTextures[toPage * 2 + 1];
+                this.page3.texture = this.pageTextures[fromPage * 2];
+                this.page4.texture = this.pageTextures[fromPage * 2 + 1];
             }
 
-            var displayPageIndex = doublePageCount ? _pageIndex * 2 + 1 : _pageIndex + 1;
-            currentPageText.text = _closed ? "-" : displayPageIndex.ToString();
+            var displayPageIndex = this.doublePageCount ? this._pageIndex * 2 + 1 : this._pageIndex + 1;
+            this.currentPageText.text = this._closed ? "-" : displayPageIndex.ToString();
 
-            _animator.SetBool(forward ? _animatorParamForward : _animatorParamBackward, true);
-            SendCustomEventDelayedFrames(nameof(StartPageSendAnimation), DELAY_FRAMES);
+            this._animator.SetBool(forward ? this._animatorParamForward : this._animatorParamBackward, true);
+            this.SendCustomEventDelayedFrames(nameof(UdonMagazine.StartPageSendAnimation), DelayFrames);
 
-            _distribute(false);
+            this._distribute(false);
         }
 
         public void StartPageSendAnimation() {
-            _animator.SetBool(_animatorParamForward, false);
-            _animator.SetBool(_animatorParamBackward, false);
+            this._animator.SetBool(this._animatorParamForward, false);
+            this._animator.SetBool(this._animatorParamBackward, false);
         }
 
         public void OnSendPageAnimationEnd() {
-            _syncPageDisplay();
-            OnAnimationEnd();
+            this._syncPageDisplay();
+            this.OnAnimationEnd();
         }
 
         public void OnAnimationEnd() {
-            _animating = false;
+            this._animating = false;
         }
 
         public void Start() {
             Debug.Log("[UdonMagazine] Start");
 
-            _animator = this.GetComponent<Animator>();
+            this._animator = this.GetComponent<Animator>();
 
-            if (pageTextures.Length % 2 != 0) {
+            if (this.pageTextures.Length % 2 != 0) {
                 Debug.LogError("[UdonMagazine] Number of page must be even.");
             }
 
-            _maxPageIndex = pageTextures.Length / 2 - 1;
-            var maxPageIndex = doublePageCount ? _maxPageIndex * 2 + 2 : _maxPageIndex + 1;
-            maxPageText.text = maxPageIndex.ToString();
-            _animating = false;
-            _closed = true;
-            _pageIndex = 0;
-            _refreshedOnce = false;
-            _distribute(false);
+            this._maxPageIndex = this.pageTextures.Length / 2 - 1;
+            var maxPageIndex = this.doublePageCount ? this._maxPageIndex * 2 + 2 : this._maxPageIndex + 1;
+            this.maxPageText.text = maxPageIndex.ToString();
+            this._animating = false;
+            this._closed = true;
+            this._pageIndex = 0;
+            this._refreshedOnce = false;
+            this._distribute(false);
         }
 
         public override void OnDeserialization() {
             // refresh ONLY first time (i.e. when local player joined)
             // usually, states are synced in a procedural way via SendCustomNetworkEvent
-            if (_refreshedOnce) return;
-            _refreshedOnce = true;
+            if (this._refreshedOnce) return;
+            this._refreshedOnce = true;
 
-            Refresh();
+            this.Refresh();
         }
 
         private void OnDistributeRequest() {
-            _distribute(false);
+            this._distribute(false);
         }
 
         public override void OnPlayerJoined(VRCPlayerApi _) {
-            _distribute(false);
+            this._distribute(false);
         }
 
         public void OnPickupUseDownLocal() {
-            if (_closed) _open(0, false);
-            else _close(true);
+            if (this._closed)
+                this._open(0, false);
+            else
+                this._close(true);
         }
 
         public void ForwardLocal() {
-            if (_closed) _open(0, false);
-            else if (_pageIndex < _maxPageIndex) _sendPage(_pageIndex + 1);
-            else _close(false);
+            if (this._closed)
+                this._open(0, false);
+            else if (this._pageIndex < this._maxPageIndex)
+                this._sendPage(this._pageIndex + 1);
+            else
+                this._close(false);
         }
 
         public void BackwardLocal() {
-            if (_closed) _open(_maxPageIndex, true);
-            else if (_pageIndex > 0) _sendPage(_pageIndex - 1);
-            else _close(true);
+            if (this._closed)
+                this._open(this._maxPageIndex, true);
+            else if (this._pageIndex > 0)
+                this._sendPage(this._pageIndex - 1);
+            else
+                this._close(true);
         }
 
         public override void OnPickupUseDown() {
-            _takeOwnership();
-            SendCustomNetworkEvent(NetworkEventTarget.All, nameof(OnPickupUseDownLocal));
+            this._takeOwnership();
+            this.SendCustomNetworkEvent(NetworkEventTarget.All, nameof(UdonMagazine.OnPickupUseDownLocal));
         }
 
         public void Forward() {
-            _takeOwnership();
-            SendCustomNetworkEvent(NetworkEventTarget.All, nameof(ForwardLocal));
+            this._takeOwnership();
+            this.SendCustomNetworkEvent(NetworkEventTarget.All, nameof(UdonMagazine.ForwardLocal));
         }
 
         public void Backward() {
-            _takeOwnership();
-            SendCustomNetworkEvent(NetworkEventTarget.All, nameof(BackwardLocal));
+            this._takeOwnership();
+            this.SendCustomNetworkEvent(NetworkEventTarget.All, nameof(UdonMagazine.BackwardLocal));
         }
 
         public void Refresh() {
             Debug.Log("[UdonMagazine] Refreshing");
 
-            _animating = false;
-            _closed = _closedSynced;
-            _pageIndex = _pageIndexSynced;
-            _animator.SetBool(_animatorParamOpened, !_closed);
-            _syncPageDisplay();
-            SendCustomNetworkEvent(NetworkEventTarget.Owner, nameof(OnDistributeRequest));
+            this._animating = false;
+            this._closed = this._closedSynced;
+            this._pageIndex = this._pageIndexSynced;
+            this._animator.SetBool(this._animatorParamOpened, !this._closed);
+            this._syncPageDisplay();
+            this.SendCustomNetworkEvent(NetworkEventTarget.Owner, nameof(UdonMagazine.OnDistributeRequest));
         }
 
         public void ClearPageTextures(int numPages, Texture2D defaultTexture) {
             this.pageTextures = new Texture2D[numPages];
             for (var i = 0; i < numPages; i++) {
-                pageTextures[i] = defaultTexture;
+                this.pageTextures[i] = defaultTexture;
             }
 
-            _maxPageIndex = pageTextures.Length / 2 - 1;
-            var maxPageIndex = doublePageCount ? _maxPageIndex * 2 + 2 : _maxPageIndex + 1;
-            maxPageText.text = maxPageIndex.ToString();
-            _animating = false;
-            _closed = true;
-            _pageIndex = 0;
-            _refreshedOnce = false;
-            _distribute(false);
+            this._maxPageIndex = this.pageTextures.Length / 2 - 1;
+            var maxPageIndex = this.doublePageCount ? this._maxPageIndex * 2 + 2 : this._maxPageIndex + 1;
+            this.maxPageText.text = maxPageIndex.ToString();
+            this._animating = false;
+            this._closed = true;
+            this._pageIndex = 0;
+            this._refreshedOnce = false;
+            this._distribute(false);
         }
 
         public void SetPageTexture(int index, Texture2D texture) {

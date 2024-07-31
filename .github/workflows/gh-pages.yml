@@ -3,28 +3,63 @@ name: Build and Deploy to GitHub Pages
 on:
   push:
     branches: ["main"]
+    paths: ["docs~"]
+  workflow_dispatch:
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+env:
+  ARTIFACT_NAME: github-pages
+  ROOT_DIR: ./docs~
 
 jobs:
-  build-and-deploy:
-    runs-on: ubuntu-latest
+  build:
     timeout-minutes: 1
 
     defaults:
       run:
-        working-directory: docs~
+        working-directory: ${{ env.ROOT_DIR }}
 
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
       - name: Use Node.js
-        uses: actions/setup-node@v3
-
-      - run: npm ci
-
-      - run: npm run build
-
-      - name: deploy
-        uses: peaceiris/actions-gh-pages@v3
+        uses: actions/setup-node@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./docs~/dist
+          node-version-file: ${{ env.ROOT_DIR }}/package.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.ARTIFACT_NAME }}
+          path: ${{ env.ROOT_DIR }}/dist/
+
+  deploy:
+    needs: build
+
+    timeout-minutes: 1
+
+    permissions:
+      pages: write
+      id-token: write
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.output.page_url }}
+
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+        with:
+          artifact_name: ${{ env.ARTIFACT_NAME }}

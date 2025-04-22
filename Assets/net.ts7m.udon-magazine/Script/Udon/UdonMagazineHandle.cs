@@ -18,8 +18,7 @@ namespace net.ts7m.udon_magazine.script.udon {
 
             if (this.backward) {
                 this.magazine.Backward();
-            }
-            else {
+            } else {
                 this.magazine.Forward();
             }
         }

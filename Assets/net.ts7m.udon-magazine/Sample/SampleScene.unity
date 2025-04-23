@@ -189,6 +189,12 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2809101995262594763, guid: 529a5a452f24f0043a35f2d68c093244,
         type: 3}
+    - target: {fileID: 2826786560623236157, guid: 529a5a452f24f0043a35f2d68c093244,
+        type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 2826786560623236157, guid: 529a5a452f24f0043a35f2d68c093244,
+        type: 3}
     - target: {fileID: 3546902071610693837, guid: 529a5a452f24f0043a35f2d68c093244,
         type: 3}
       propertyPath: debug
@@ -266,10 +272,15 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 4117247062890069744, guid: 529a5a452f24f0043a35f2d68c093244,
         type: 3}
+    - target: {fileID: 5665488417445457684, guid: 529a5a452f24f0043a35f2d68c093244,
+        type: 3}
+      propertyPath: _syncMethod
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5706560644483027543, guid: 529a5a452f24f0043a35f2d68c093244,
         type: 3}
       propertyPath: m_Name
-      value: UdonMagazine (1)
+      value: UdonMagazineStandalone (1)
       objectReference: {fileID: 0}
     - target: {fileID: 6918792036215009441, guid: 529a5a452f24f0043a35f2d68c093244,
         type: 3}
@@ -437,6 +448,12 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2809101995262594763, guid: 529a5a452f24f0043a35f2d68c093244,
         type: 3}
+    - target: {fileID: 2826786560623236157, guid: 529a5a452f24f0043a35f2d68c093244,
+        type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 2826786560623236157, guid: 529a5a452f24f0043a35f2d68c093244,
+        type: 3}
     - target: {fileID: 3546902071610693837, guid: 529a5a452f24f0043a35f2d68c093244,
         type: 3}
       propertyPath: debug
@@ -514,10 +531,15 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 4117247062890069744, guid: 529a5a452f24f0043a35f2d68c093244,
         type: 3}
+    - target: {fileID: 5665488417445457684, guid: 529a5a452f24f0043a35f2d68c093244,
+        type: 3}
+      propertyPath: _syncMethod
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5706560644483027543, guid: 529a5a452f24f0043a35f2d68c093244,
         type: 3}
       propertyPath: m_Name
-      value: UdonMagazine
+      value: UdonMagazineStandalone
       objectReference: {fileID: 0}
     - target: {fileID: 6918792036215009441, guid: 529a5a452f24f0043a35f2d68c093244,
         type: 3}

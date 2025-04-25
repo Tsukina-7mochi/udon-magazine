@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   serializationData:
-    SerializedFormat: 0
+    SerializedFormat: 2
     SerializedBytes: 
     ReferencedUnityObjects: []
     SerializedBytesString: 
@@ -119,7 +119,7 @@ PrefabInstance:
     - target: {fileID: 1933533690728418644, guid: 529a5a452f24f0043a35f2d68c093244,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.149
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1933533690728418644, guid: 529a5a452f24f0043a35f2d68c093244,
         type: 3}
@@ -165,11 +165,12 @@ PrefabInstance:
         type: 3}
       propertyPath: serializationData.Prefab
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 2809101995262594763, guid: 529a5a452f24f0043a35f2d68c093244,
+        type: 3}
     - target: {fileID: 2809101995262594763, guid: 529a5a452f24f0043a35f2d68c093244,
         type: 3}
       propertyPath: serializationData.SerializedFormat
-      value: 0
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2826786560623236157, guid: 529a5a452f24f0043a35f2d68c093244,
         type: 3}
@@ -201,7 +202,8 @@ PrefabInstance:
         type: 3}
       propertyPath: serializationData.Prefab
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 3546902071610693837, guid: 529a5a452f24f0043a35f2d68c093244,
+        type: 3}
     - target: {fileID: 3546902071610693837, guid: 529a5a452f24f0043a35f2d68c093244,
         type: 3}
       propertyPath: pageTextures.Array.data[0]
@@ -255,17 +257,18 @@ PrefabInstance:
     - target: {fileID: 3546902071610693837, guid: 529a5a452f24f0043a35f2d68c093244,
         type: 3}
       propertyPath: serializationData.SerializedFormat
-      value: 0
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4117247062890069744, guid: 529a5a452f24f0043a35f2d68c093244,
         type: 3}
       propertyPath: serializationData.Prefab
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 4117247062890069744, guid: 529a5a452f24f0043a35f2d68c093244,
+        type: 3}
     - target: {fileID: 4117247062890069744, guid: 529a5a452f24f0043a35f2d68c093244,
         type: 3}
       propertyPath: serializationData.SerializedFormat
-      value: 0
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4131200333906879385, guid: 529a5a452f24f0043a35f2d68c093244,
         type: 3}

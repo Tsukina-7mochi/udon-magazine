@@ -7,7 +7,7 @@ namespace net.ts7m.udon_magazine.script.udon {
         [SerializeField] [HideInInspector] private int version = 2;
         [SerializeField] private string title;
         [SerializeField] private string author;
-        [SerializeField] private string description;
+        [SerializeField] [TextArea] private string description;
         [SerializeField] private Texture2D coverTexture;
         [SerializeField] private Texture2D[] pageTextures;
 

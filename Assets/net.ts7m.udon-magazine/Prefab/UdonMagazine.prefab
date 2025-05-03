@@ -1052,7 +1052,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: Udon Magazin x.x.x
+  m_Text: Udon Magazine x.x.x
 --- !u!1 &5067553900821306607
 GameObject:
   m_ObjectHideFlags: 0
@@ -2281,7 +2281,7 @@ MonoBehaviour:
   pageTextures: []
   doublePageCount: 0
   debug: 0
-  packageManifest: {fileID: 4900000, guid: b295b80f0f309f743b0c9412099dcfb3, type: 3}
+  versionTextAsset: {fileID: 4900000, guid: 40476451c098bf04a84e8847e350c029, type: 3}
   animator: {fileID: 5501080081093478367}
   page1: {fileID: 5491621900972205410}
   page2: {fileID: 3612010453759278554}

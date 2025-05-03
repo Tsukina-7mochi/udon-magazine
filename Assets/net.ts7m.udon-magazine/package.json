@@ -1,7 +1,7 @@
 {
   "name": "net.ts7m.udon-magazine",
   "displayName": "Udon Magazine",
-  "version": "0.2.0-alpha.3",
+  "version": "0.2.0",
   "author": {
     "name": "Mooncake Sugar",
     "email": "Tsukina7mochi@gmail.com"
@@ -12,5 +12,5 @@
   "vpmDependencies": {
     "com.vrchat.worlds": ">=3.5.0"
   },
-  "url": "https://github.com/Tsukina-7mochi/udon-magazine/releases/download/v0.2.0-alpha.3/net.ts7m.udon-magazine-v0.2.0-alpha.3.zip"
+  "url": "https://github.com/Tsukina-7mochi/udon-magazine/releases/download/v0.2.0/net.ts7m.udon-magazine-v0.2.0.zip"
 }

@@ -207,7 +207,7 @@ namespace net.ts7m.udon_magazine.script.udon {
         public void Start() {
             if (this.debug) this._debugLog($"{nameof(this.Start)}()");
 
-            this.versionText.text = this.versionTextAsset.text;
+            this.versionText.text = this.versionTextAsset.text.Trim();
 
             var maxPage = this.pageTextures.Length;
             if (!this.doublePageCount) maxPage /= 2;

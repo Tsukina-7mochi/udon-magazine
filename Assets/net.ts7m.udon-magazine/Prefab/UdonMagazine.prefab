@@ -2104,9 +2104,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactTextPlacement: {fileID: 0}
-  interactText: Use
+  interactText: Next page
   interactTextGO: {fileID: 0}
-  proximity: 2
+  proximity: 0.25
   SynchronizePosition: 0
   AllowCollisionOwnershipTransfer: 0
   Reliable: 0
@@ -2297,9 +2297,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactTextPlacement: {fileID: 0}
-  interactText: Use
+  interactText: Previous page
   interactTextGO: {fileID: 0}
-  proximity: 2
+  proximity: 0.25
   SynchronizePosition: 0
   AllowCollisionOwnershipTransfer: 0
   Reliable: 0

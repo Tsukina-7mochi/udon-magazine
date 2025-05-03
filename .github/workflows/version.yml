@@ -1,0 +1,85 @@
+name: Check Version Files
+
+on:
+  push:
+    branches:
+    tags:
+  workflow_dispatch:
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+env:
+  VPM_REPOSITORY: ./vpm.json
+  VPM_PACKAGE: ./Assets/net.ts7m.udon-magazine/package.json
+  URL_PATTERN: "https://github.com/Tsukina-7mochi/udon-magazine/releases/download/v{{version}}/net.ts7m.udon-magazine-v{{version}}.zip"
+
+jobs:
+  check-version:
+    timeout-minutes: 1
+
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Get package name
+        id: get-name
+        run: |
+          PKG_NAME="$(cat $VPM_PACKAGE | jq '.name' -cM | sed -e s/\"//g)"
+          if [ "$PKG_NAME" = "null" ]; then
+            echo "::error file="$VPM_PACKAGE"::Entry \"name\": not found."
+            exit 1
+          fi
+          echo "Package name: $PKG_NAME"
+          echo "PKG_NAME=$PKG_NAME" >> "$GITHUB_OUTPUT"
+
+      - name: Get current version
+        id: get-version
+        run: |
+          VERSION="$(cat $VPM_PACKAGE | jq '.version' -cM | sed -e s/\"//g)"
+          if [ "$VERSION" = "null" ]; then
+            echo "::error file="$VPM_PACKAGE"::Entry \"version\": not found."
+            exit 1
+          fi
+          echo "Version: $VERSION"
+          echo "VERSION=$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Check URL
+        env:
+          VERSION: ${{ steps.get-version.outputs.VERSION }}
+        run: |
+          ACTUAL="$(cat $VPM_PACKAGE | jq '.url' -cM | sed -e s/\"//g)"
+          EXPECTED="$(echo $URL_PATTERN | sed -e s/{{version}}/$VERSION/g)"
+          if [ "$ACTUAL" != "$EXPECTED" ]; then
+            echo "::error file="$VMP_REPOSITORY"::Entry \"url\" does not match to pattern. Actual: $ACTUAL, Expected: $EXPECTED"
+            exit 1
+          fi
+
+      - name: Fail when version mismatchs with tag
+        if: |
+          startsWith(github.ref, 'refs/tags/')
+          && github.ref_name != steps.get-version.outputs.VERSION
+          && github.ref_name != format('v{0}', steps.get-version.outputs.VERSION)
+        env:
+          VERSION: ${{ steps.get-version.outputs.VERSION }}
+        run: |
+          echo "::error::Version $VERSION does not match with tag name ${{ github.ref_name }}"
+          exit 1
+
+      - name: Compare entries
+        env:
+          PKG_NAME: ${{ steps.get-name.outputs.PKG_NAME }}
+          VERSION: ${{ steps.get-version.outputs.VERSION }}
+        run: | 
+          REPO_ENTRY="$(cat $VPM_REPOSITORY | jq .packages[\"$PKG_NAME\"].versions[\"$VERSION\"] -cMS)"
+          PKG_ENTRY="$(cat $VPM_PACKAGE | jq '.' -cMS)"
+          if [ "$REPO_ENTRY" = "null" ]; then
+            echo "::error file="$VMP_REPOSITORY"::No entry of $PKG_NAME:$VERSION"
+            exit 1
+          fi
+          if [ "$REPO_ENTRY" != "$PKG_ENTRY" ]; then
+            echo "::error::Content of package manifest does not match to the entry of vpm repository."
+            exit 1
+          fi
+

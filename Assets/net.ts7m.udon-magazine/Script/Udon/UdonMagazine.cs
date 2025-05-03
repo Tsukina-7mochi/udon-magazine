@@ -13,7 +13,6 @@ namespace net.ts7m.udon_magazine.script.udon {
         [SerializeField] private string title;
         [SerializeField] private string author;
         [SerializeField] [TextArea] private string description;
-        [SerializeField] private Material coverMaterial;
         [SerializeField] private Texture2D[] pageTextures;
 
         [Header("Behaviors")]
@@ -22,8 +21,6 @@ namespace net.ts7m.udon_magazine.script.udon {
 
         [Header("References")]
         [SerializeField] private Animator animator;
-        [SerializeField] private Renderer coverRenderer;
-        [SerializeField] private int coverMaterialIndex;
         [SerializeField] private RawImage page1;
         [SerializeField] private RawImage page2;
         [SerializeField] private RawImage page3;
@@ -54,7 +51,6 @@ namespace net.ts7m.udon_magazine.script.udon {
         public string Title => this.title;
         public string Author => this.author;
         public string Description => this.description;
-        public Material CoverMaterial => this.coverMaterial;
 
         public int PageIndex {
             get => this._pageIndex;
@@ -207,8 +203,6 @@ namespace net.ts7m.udon_magazine.script.udon {
 
         public void Start() {
             if (this.debug) this._debugLog($"{nameof(this.Start)}()");
-
-            this.coverRenderer.materials[this.coverMaterialIndex] = this.coverMaterial;
 
             var maxPage = this.pageTextures.Length;
             if (!this.doublePageCount) maxPage /= 2;

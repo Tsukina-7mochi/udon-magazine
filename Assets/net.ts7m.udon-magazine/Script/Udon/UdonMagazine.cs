@@ -43,13 +43,24 @@ namespace net.ts7m.udon_magazine.script.udon {
         private bool _animating;
 
         /**
-         * Which page is opened.
-         * When the value is -1, magazine is closed.
-         * When the value is -2, magazine is closed and flipped.
+         * * Which page is opened.
+         * 
+         * * When the value is -1, magazine is closed.
+         * * When the value is -2, magazine is closed and flipped.
          */
         private int _displayPageIndex = -1;
-
         [UdonSynced] private int _pageIndex = -1;
+
+        public string Title => this.title;
+        public string Author => this.author;
+        public string Description => this.description;
+        public Material CoverMaterial => this.coverMaterial;
+
+        public int PageIndex {
+            get => this._pageIndex;
+            set => this._setPageIndex(value);
+        }
+
 
         private void _debugLog(string message) {
             Debug.Log("[UdonMagazine]" + message);
@@ -135,9 +146,11 @@ namespace net.ts7m.udon_magazine.script.udon {
             }
         }
 
-        public bool SetPageIndex(int pageIndex) {
-            if (this.debug) this._debugLog($"{nameof(this.SetPageIndex)}({pageIndex})");
+        private bool _setPageIndex(int pageIndex) {
+            if (this.debug) this._debugLog($"{nameof(this._setPageIndex)}({pageIndex})");
 
+            if (pageIndex < -2) return false;
+            if (pageIndex > (this.pageTextures.Length - 1) / 2) return false;
             if (!this._takeOwnership()) return false;
 
             this._pageIndex = pageIndex;
@@ -197,6 +210,10 @@ namespace net.ts7m.udon_magazine.script.udon {
 
             this.coverRenderer.materials[this.coverMaterialIndex] = this.coverMaterial;
 
+            var maxPage = this.pageTextures.Length;
+            if (!this.doublePageCount) maxPage /= 2;
+            this.maxPageText.text = maxPage.ToString();
+
             this.RestoreStates();
             this._requestSerializationToOwner();
         }
@@ -210,14 +227,11 @@ namespace net.ts7m.udon_magazine.script.udon {
         public override void OnDeserialization() {
             if (this.debug) this._debugLog($"{nameof(this.OnDeserialization)}()");
 
-            if (this.doublePageCount) {
-                this.maxPageText.text = this.pageTextures.Length.ToString();
-                this.currentPageText.text =
-                    this._pageIndex >= 0 ? (this._pageIndex * 2 + 1).ToString() : "-";
+            if (this._pageIndex < 0) {
+                this.currentPageText.text = "-";
             } else {
-                this.maxPageText.text = (this.pageTextures.Length / 2).ToString();
-                this.currentPageText.text =
-                    this._pageIndex >= 0 ? (this._pageIndex + 1).ToString() : "-";
+                var pageIndex = (this.doublePageCount ? this._pageIndex * 2 : this._pageIndex) + 1;
+                this.currentPageText.text = pageIndex.ToString();
             }
 
             if (!this._animating) this.InvokeSendPageAnimationFromState();
@@ -229,7 +243,7 @@ namespace net.ts7m.udon_magazine.script.udon {
             var pageIndex = this._pageIndex + 1;
             if (pageIndex > (this.pageTextures.Length - 1) / 2) pageIndex = -2;
 
-            this.SetPageIndex(pageIndex);
+            this.PageIndex = pageIndex;
         }
 
         public void Backward() {
@@ -238,7 +252,7 @@ namespace net.ts7m.udon_magazine.script.udon {
             var pageIndex = this._pageIndex - 1;
             if (pageIndex < -1) pageIndex = (this.pageTextures.Length - 1) / 2;
 
-            this.SetPageIndex(pageIndex);
+            this.PageIndex = pageIndex;
         }
 
         public void RestoreStates() {

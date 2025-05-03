@@ -6,6 +6,22 @@
   "packages": {
     "net.ts7m.udon-magazine": {
       "versions": {
+        "0.2.0-alpha.2": {
+          "name": "net.ts7m.udon-magazine",
+          "displayName": "Udon Magazine",
+          "version": "0.2.0-alpha.2",
+          "author": {
+            "name": "Mooncake Sugar",
+            "email": "Tsukina7mochi@gmail.com"
+          },
+          "unity": "2022.3",
+          "description": "Magazine Implementation for VRChat Udon",
+          "license": "MIT",
+          "vpmDependencies": {
+            "com.vrchat.worlds": ">=3.5.0"
+          },
+          "url": "https://github.com/Tsukina-7mochi/udon-magazine/releases/download/v0.2.0-alpha.2/net.ts7m.udon-magazine-v0.2.0-alpha.2.zip"
+        },
         "0.2.0-alpha.1": {
           "name": "net.ts7m.udon-magazine",
           "displayName": "Udon Magazine",

@@ -8,10 +8,22 @@ namespace net.ts7m.udon_magazine.script.udon {
     [UdonBehaviourSyncMode(BehaviourSyncMode.Manual)]
     public class UdonMagazine : UdonSharpBehaviour {
         [SerializeField] [HideInInspector] private int version = 2;
-        [SerializeField] private UdonMagazineBook book;
 
+        [Header("Contents")]
+        [SerializeField] private string title;
+        [SerializeField] private string author;
+        [SerializeField] [TextArea] private string description;
         [SerializeField] private Material coverMaterial;
+        [SerializeField] private Texture2D[] pageTextures;
+
+        [Header("Behaviors")]
+        [SerializeField] private bool doublePageCount;
+        [SerializeField] private bool debug;
+
+        [Header("References")]
         [SerializeField] private Animator animator;
+        [SerializeField] private Renderer coverRenderer;
+        [SerializeField] private int coverMaterialIndex;
         [SerializeField] private RawImage page1;
         [SerializeField] private RawImage page2;
         [SerializeField] private RawImage page3;
@@ -19,8 +31,6 @@ namespace net.ts7m.udon_magazine.script.udon {
         [SerializeField] private Text currentPageText;
         [SerializeField] private Text maxPageText;
 
-        [SerializeField] private bool doublePageCount;
-        [SerializeField] private bool debug;
         private readonly int _animatorParamBackward = Animator.StringToHash("Backward");
         private readonly int _animatorParamFlipped = Animator.StringToHash("Flipped");
         private readonly int _animatorParamForward = Animator.StringToHash("Forward");
@@ -33,7 +43,9 @@ namespace net.ts7m.udon_magazine.script.udon {
         private bool _animating;
 
         /**
-         * Which page is opened; When the value is -1, magazine is closed. When the value is -2, magazine is closed and flipped.
+         * Which page is opened.
+         * When the value is -1, magazine is closed.
+         * When the value is -2, magazine is closed and flipped.
          */
         private int _displayPageIndex = -1;
 
@@ -43,21 +55,15 @@ namespace net.ts7m.udon_magazine.script.udon {
             Debug.Log("[UdonMagazine]" + message);
         }
 
-        private void _loadBook() {
-            if (this.debug) this._debugLog($"{nameof(this._loadBook)}");
-
-            this.coverMaterial.mainTexture = this.book.CoverTexture;
-        }
-
         /**
-         * Returns true if we have ownership of this object.
+         * Returns true if the local player has ownership of this object.
          */
         private bool _isOwner() {
             return Networking.IsOwner(Networking.LocalPlayer, this.gameObject);
         }
 
         /**
-         * Takes ownership of this object. Returns true if we have ownership.
+         * Takes ownership of this object. Returns true if the local player has ownership.
          */
         private bool _takeOwnership() {
             if (this.debug) this._debugLog($"{nameof(this._takeOwnership)}()");
@@ -74,12 +80,22 @@ namespace net.ts7m.udon_magazine.script.udon {
         private void _requestSerializationToOwner() {
             if (this.debug) this._debugLog($"{nameof(this._requestSerializationToOwner)}()");
 
-            if (this._isOwner()) return;
-            this.SendCustomNetworkEvent(NetworkEventTarget.Owner, nameof(this.RequestSerialization));
+            if (this._isOwner()) {
+                this.RequestSerialization();
+                return;
+            }
+
+            this.SendCustomNetworkEvent(
+                NetworkEventTarget.Owner,
+                nameof(this.RequestSerialization)
+            );
         }
 
         private void _invokeSendPageAnimation(int oldPageIndex, int newPageIndex) {
-            if (this.debug) this._debugLog($"{nameof(this._invokeSendPageAnimation)}({oldPageIndex}, {newPageIndex})");
+            if (this.debug) {
+                this._debugLog(
+                    $"{nameof(this._invokeSendPageAnimation)}({oldPageIndex}, {newPageIndex})");
+            }
 
             if (oldPageIndex == newPageIndex) return;
             if (this._animating) return;
@@ -92,15 +108,15 @@ namespace net.ts7m.udon_magazine.script.udon {
             }
 
             if (oldPageIndex < 0) {
-                this.page1.texture = this.book.PageTextures[newPageIndex * 2];
-                this.page4.texture = this.book.PageTextures[newPageIndex * 2 + 1];
+                this.page1.texture = this.pageTextures[newPageIndex * 2];
+                this.page4.texture = this.pageTextures[newPageIndex * 2 + 1];
                 this.animator.SetBool(this._animatorParamOpened, true);
                 return;
             }
 
             if (oldPageIndex < newPageIndex) {
-                this.page1.texture = this.book.PageTextures[oldPageIndex * 2];
-                this.page2.texture = this.book.PageTextures[oldPageIndex * 2 + 1];
+                this.page1.texture = this.pageTextures[oldPageIndex * 2];
+                this.page2.texture = this.pageTextures[oldPageIndex * 2 + 1];
                 this.animator.SetBool(this._animatorParamForward, true);
 
                 this.SendCustomEventDelayedFrames(
@@ -108,8 +124,8 @@ namespace net.ts7m.udon_magazine.script.udon {
                     this._sendPageAnimationDelay
                 );
             } else {
-                this.page3.texture = this.book.PageTextures[oldPageIndex * 2];
-                this.page4.texture = this.book.PageTextures[oldPageIndex * 2 + 1];
+                this.page3.texture = this.pageTextures[oldPageIndex * 2];
+                this.page4.texture = this.pageTextures[oldPageIndex * 2 + 1];
                 this.animator.SetBool(this._animatorParamBackward, true);
 
                 this.SendCustomEventDelayedFrames(
@@ -136,16 +152,16 @@ namespace net.ts7m.udon_magazine.script.udon {
         public void SendPageAnimationEventForward() {
             if (this.debug) Debug.Log($"{nameof(this.SendPageAnimationEventForward)}()");
 
-            this.page3.texture = this.book.PageTextures[this._displayPageIndex * 2];
-            this.page4.texture = this.book.PageTextures[this._displayPageIndex * 2 + 1];
+            this.page3.texture = this.pageTextures[this._displayPageIndex * 2];
+            this.page4.texture = this.pageTextures[this._displayPageIndex * 2 + 1];
             this.animator.SetBool(this._animatorParamForward, false);
         }
 
         public void SendPageAnimationEventBackward() {
             if (this.debug) Debug.Log($"{nameof(this.SendPageAnimationEventBackward)}()");
 
-            this.page1.texture = this.book.PageTextures[this._displayPageIndex * 2];
-            this.page2.texture = this.book.PageTextures[this._displayPageIndex * 2 + 1];
+            this.page1.texture = this.pageTextures[this._displayPageIndex * 2];
+            this.page2.texture = this.pageTextures[this._displayPageIndex * 2 + 1];
             this.animator.SetBool(this._animatorParamBackward, false);
         }
 
@@ -155,15 +171,16 @@ namespace net.ts7m.udon_magazine.script.udon {
             this._animating = false;
 
             if (this._displayPageIndex >= 0) {
-                this.page1.texture = this.book.PageTextures[this._displayPageIndex * 2];
-                this.page4.texture = this.book.PageTextures[this._displayPageIndex * 2 + 1];
+                this.page1.texture = this.pageTextures[this._displayPageIndex * 2];
+                this.page4.texture = this.pageTextures[this._displayPageIndex * 2 + 1];
             }
 
-            if (this._displayPageIndex != this._pageIndex)
+            if (this._displayPageIndex != this._pageIndex) {
                 this.SendCustomEventDelayedFrames(
                     nameof(this.InvokeSendPageAnimationFromState),
                     this._sendPageAnimationDelay
                 );
+            }
         }
 
         public void InvokeSendPageAnimationFromState() {
@@ -178,7 +195,7 @@ namespace net.ts7m.udon_magazine.script.udon {
         public void Start() {
             if (this.debug) this._debugLog($"{nameof(this.Start)}()");
 
-            this._loadBook();
+            this.coverRenderer.materials[this.coverMaterialIndex] = this.coverMaterial;
 
             this.RestoreStates();
             this._requestSerializationToOwner();
@@ -194,11 +211,13 @@ namespace net.ts7m.udon_magazine.script.udon {
             if (this.debug) this._debugLog($"{nameof(this.OnDeserialization)}()");
 
             if (this.doublePageCount) {
-                this.maxPageText.text = this.book.PageTextures.Length.ToString();
-                this.currentPageText.text = this._pageIndex >= 0 ? (this._pageIndex * 2 + 1).ToString() : "-";
+                this.maxPageText.text = this.pageTextures.Length.ToString();
+                this.currentPageText.text =
+                    this._pageIndex >= 0 ? (this._pageIndex * 2 + 1).ToString() : "-";
             } else {
-                this.maxPageText.text = (this.book.PageTextures.Length / 2).ToString();
-                this.currentPageText.text = this._pageIndex >= 0 ? (this._pageIndex + 1).ToString() : "-";
+                this.maxPageText.text = (this.pageTextures.Length / 2).ToString();
+                this.currentPageText.text =
+                    this._pageIndex >= 0 ? (this._pageIndex + 1).ToString() : "-";
             }
 
             if (!this._animating) this.InvokeSendPageAnimationFromState();
@@ -208,7 +227,7 @@ namespace net.ts7m.udon_magazine.script.udon {
             if (this.debug) this._debugLog($"{nameof(this.Forward)}()");
 
             var pageIndex = this._pageIndex + 1;
-            if (pageIndex > (this.book.PageTextures.Length - 1) / 2) pageIndex = -2;
+            if (pageIndex > (this.pageTextures.Length - 1) / 2) pageIndex = -2;
 
             this.SetPageIndex(pageIndex);
         }
@@ -217,7 +236,7 @@ namespace net.ts7m.udon_magazine.script.udon {
             if (this.debug) this._debugLog($"{nameof(this.Backward)}()");
 
             var pageIndex = this._pageIndex - 1;
-            if (pageIndex < -1) pageIndex = (this.book.PageTextures.Length - 1) / 2;
+            if (pageIndex < -1) pageIndex = (this.pageTextures.Length - 1) / 2;
 
             this.SetPageIndex(pageIndex);
         }
@@ -229,8 +248,8 @@ namespace net.ts7m.udon_magazine.script.udon {
             this.animator.SetBool(this._animatorParamOpened, this._displayPageIndex >= 0);
             this.animator.SetBool(this._animatorParamFlipped, this._displayPageIndex == -2);
             if (this._displayPageIndex >= 0) {
-                this.page1.texture = this.book.PageTextures[this._displayPageIndex * 2];
-                this.page4.texture = this.book.PageTextures[this._displayPageIndex * 2 + 1];
+                this.page1.texture = this.pageTextures[this._displayPageIndex * 2];
+                this.page4.texture = this.pageTextures[this._displayPageIndex * 2 + 1];
             }
         }
 

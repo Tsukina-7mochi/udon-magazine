@@ -1109,6 +1109,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 4286353348348854240}
   - {fileID: 3228218084482262833}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1589,7 +1590,7 @@ RectTransform:
   - {fileID: 6468543481974197107}
   - {fileID: 5358222187199211996}
   - {fileID: 5435572459900906226}
-  m_Father: {fileID: 3228218084482262833}
+  m_Father: {fileID: 1933533690728418644}
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: -90}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -1953,19 +1954,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4299901466802140116, guid: 6ef1e9cdc075c744ab94df6aa3a47d5c,
         type: 3}
-      propertyPath: m_CastShadows
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4299901466802140116, guid: 6ef1e9cdc075c744ab94df6aa3a47d5c,
-        type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: f980b9a75d5138249a77f54c972980f8, type: 2}
-    - target: {fileID: 4299901466802140116, guid: 6ef1e9cdc075c744ab94df6aa3a47d5c,
-        type: 3}
       propertyPath: m_Materials.Array.data[1]
       value: 
-      objectReference: {fileID: 2100000, guid: 86f5e600c6417d442a84946d7047b444, type: 2}
+      objectReference: {fileID: 2100000, guid: f65d5ddc478420a4ea93769519c28ec8, type: 2}
     - target: {fileID: 8879528566716807029, guid: 6ef1e9cdc075c744ab94df6aa3a47d5c,
         type: 3}
       propertyPath: m_LocalRotation.w
@@ -1989,10 +1980,6 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 6ef1e9cdc075c744ab94df6aa3a47d5c,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 4286353348348854240}
     - targetCorrespondingSourceObject: {fileID: 3844097000788239210, guid: 6ef1e9cdc075c744ab94df6aa3a47d5c,
         type: 3}
       insertIndex: -1
@@ -2047,6 +2034,12 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 4131200333906879385}
   m_SourcePrefab: {fileID: 100100000, guid: 6ef1e9cdc075c744ab94df6aa3a47d5c, type: 3}
+--- !u!137 &1218795278289597198 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 4299901466802140116, guid: 6ef1e9cdc075c744ab94df6aa3a47d5c,
+    type: 3}
+  m_PrefabInstance: {fileID: 3118274637926219994}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2006700834589020632 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -5719732579551457022, guid: 6ef1e9cdc075c744ab94df6aa3a47d5c,
@@ -2087,7 +2080,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   serializationData:
-    SerializedFormat: 0
+    SerializedFormat: 2
     SerializedBytes: 
     ReferencedUnityObjects: []
     SerializedBytesString: 
@@ -2170,7 +2163,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   serializationData:
-    SerializedFormat: 0
+    SerializedFormat: 2
     SerializedBytes: 
     ReferencedUnityObjects: []
     SerializedBytesString: 
@@ -2180,17 +2173,22 @@ MonoBehaviour:
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 6918792036215009441}
   version: 2
-  book: {fileID: 0}
+  title: 
+  author: 
+  description: 
   coverMaterial: {fileID: 2100000, guid: 86f5e600c6417d442a84946d7047b444, type: 2}
+  pageTextures: []
+  doublePageCount: 0
+  debug: 0
   animator: {fileID: 5501080081093478367}
+  coverRenderer: {fileID: 1218795278289597198}
+  coverMaterialIndex: 1
   page1: {fileID: 5491621900972205410}
   page2: {fileID: 3612010453759278554}
   page3: {fileID: 3027463577739366500}
   page4: {fileID: 2636507416816953204}
   currentPageText: {fileID: 2991647066102543504}
   maxPageText: {fileID: 1997152997344699950}
-  doublePageCount: 0
-  debug: 0
 --- !u!114 &6918792036215009441
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2275,7 +2273,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   serializationData:
-    SerializedFormat: 0
+    SerializedFormat: 2
     SerializedBytes: 
     ReferencedUnityObjects: []
     SerializedBytesString: 

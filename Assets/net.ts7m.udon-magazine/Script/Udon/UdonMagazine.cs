@@ -240,6 +240,8 @@ namespace net.ts7m.udon_magazine.script.udon {
         public void Forward() {
             if (this.debug) this._debugLog($"{nameof(this.Forward)}()");
 
+            if (this._animating) return;
+
             var pageIndex = this._pageIndex + 1;
             if (pageIndex > (this.pageTextures.Length - 1) / 2) pageIndex = -2;
 
@@ -248,6 +250,8 @@ namespace net.ts7m.udon_magazine.script.udon {
 
         public void Backward() {
             if (this.debug) this._debugLog($"{nameof(this.Backward)}()");
+
+            if (this._animating) return;
 
             var pageIndex = this._pageIndex - 1;
             if (pageIndex < -1) pageIndex = (this.pageTextures.Length - 1) / 2;

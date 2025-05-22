@@ -1,7 +1,7 @@
 {
   "name": "Udon Magazine",
   "id": "net.ts7m.udon-magazine",
-  "url": "https://raw.githubusercontent.com/Tsukina-7mochi/udon-magazine/main/vpm.json",
+  "url": "https://tsukina-7mochi.github.io/udon-magazine/vpm.json",
   "author": "Tsukina-7mochi",
   "packages": {
     "net.ts7m.udon-magazine": {

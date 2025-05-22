@@ -5,18 +5,18 @@
   "type": "module",
   "scripts": {
     "preinstall": "npx only-allow pnpm",
-    "dev": "vite",
     "build": "tsc && vite build",
+    "dev": "vite",
     "preview": "vite preview",
+    "start": "vite preview",
     "copy-repository": "mkdir -p public && cp ../vpm.json public/vpm.json"
   },
   "dependencies": {
-    "lit": "^3.1.2",
-    "sass": "^1.72.0"
+    "sass": "^1.89.0"
   },
   "devDependencies": {
-    "typescript": "^5.2.2",
-    "vite": "^5.2.0"
+    "typescript": "^5.8.3",
+    "vite": "^6.3.5"
   },
   "packageManager": "pnpm@10.11.0"
 }

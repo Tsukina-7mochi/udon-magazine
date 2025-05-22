@@ -16,13 +16,12 @@ env:
 
 jobs:
   build:
-    timeout-minutes: 1
+    runs-on: ubuntu-latest
 
     defaults:
       run:
         working-directory: ${{ env.ROOT_DIR }}
 
-    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
@@ -34,6 +33,7 @@ jobs:
         with:
           node-version: 23.x
           cache: 'pnpm'
+          cache-dependency-path: ${{ env.ROOT_DIR }}/pnpm-lock.yaml
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -51,8 +51,7 @@ jobs:
 
   deploy:
     needs: build
-
-    timeout-minutes: 1
+    runs-on: ubuntu-latest
 
     permissions:
       pages: write
@@ -62,7 +61,6 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.output.page_url }}
 
-    runs-on: ubuntu-latest
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
